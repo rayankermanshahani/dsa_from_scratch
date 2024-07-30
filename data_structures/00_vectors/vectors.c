@@ -46,7 +46,51 @@ int resize(vector* vec) {
     return 1; /* resize successful */
 }
 
+int insert(vector* vec, int elem) {
+    if (vec->size == vec->capacity) {
+        if (!resize(vec)) {
+            return 0; /* insert failed */ 
+        }
+    }
+    vec->elements[vec->size++] = elem;
+    return 1; /* insert successful */
+}
+
+int get(vector* vec, size_t index, int* elem) {
+    if (index >= vec->size) {
+        return 0; /* invalid index */
+    }
+    *elem = vec->elements[index];
+    return 1; /* get successful */
+}
+
+void print_vector(vector* vec) {
+    printf("vector (size: %zu, capacity: %zu): [ ", vec->size, vec->capacity);
+    for (size_t i = 0; i < vec->size; i++) {
+        printf("%d, ", vec->elements[i]);
+    }
+    printf("]\n");
+}
+
+void test_vector() {
+    vector* vec = create_vector(2);
+    insert(vec, 1);
+    insert(vec, 3); 
+    insert(vec, 3); /* this insert() should trigger a call to resize() */
+    insert(vec, 7);
+
+    print_vector(vec);
+
+    int elem;
+    if (get(vec, 2, &elem)) {
+        printf("element at index 2: %d\n", elem);
+    }
+
+    free_vector(vec);
+}
+
 int main(void) {
+    test_vector();
     printf("DONE\n");
     return 0;
 }
