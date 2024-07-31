@@ -1,4 +1,4 @@
-### time and space complexity analysis this vector (dynamic array) implementation
+### time and space complexity analysis for this vector (dynamic array) implementation
 
 time complexity:
 - insert(): $O(1)$ when there is space in the vector, $O(n)$ in the worst case when vector capacity is reached and resizing is needed
