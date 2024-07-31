@@ -26,6 +26,7 @@ vector* create_vector(size_t initial_capacity) {
     return vec;
 }
 
+/* free up dynamically allocated memory for a stored vector and its data */
 void free_vector(vector* vec) {
     if (vec) {
         free(vec->data);
@@ -33,8 +34,9 @@ void free_vector(vector* vec) {
     }
 }
 
+/* double a vector's capacity */
 int resize(vector* vec) {
-    size_t new_capacity = vec->capacity * 2; /* double the vector's capacity */
+    size_t new_capacity = vec->capacity * 2;
     int* new_data = (int*)realloc(vec->data, new_capacity * sizeof(int));
     if (new_data == NULL)
         return 0; /* resize failed */
@@ -44,6 +46,7 @@ int resize(vector* vec) {
     return 1; /* resize successful */
 }
 
+/* append a given integer to the end of a vector */
 int append(vector* vec, int elem) {
     if (vec->size == vec->capacity)
         if (!resize(vec)) 
@@ -52,6 +55,7 @@ int append(vector* vec, int elem) {
     return 1; /* append successful */
 }
 
+/* delete a vector's element at a specified index */
 int delete(vector* vec, size_t index) {
     if (index < 0 || index >= vec->size) {
         printf("delete() error: invalid index\n");
@@ -66,6 +70,7 @@ int delete(vector* vec, size_t index) {
     return 1;
 }
 
+/* replace vector's element at a specified index with a given integer */
 int replace(vector* vec, size_t index, int elem) {
     if (index < 0 || index >= vec->size) {
         printf("replace() error: invalid index\n");
@@ -92,6 +97,7 @@ void print_vector(vector* vec) {
     printf("]\n");
 }
 
+/* test vector data structure and its functions */
 void test_vector() {
     vector* vec = create_vector(2); /* vec: [ , ,] */
     append(vec, 1); /* vec: [1, ,] */
