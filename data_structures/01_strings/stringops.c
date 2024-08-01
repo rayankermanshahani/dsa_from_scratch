@@ -129,7 +129,6 @@ int find_substring_kmp(const char* str, const char* substr) {
 
 }
 
-
 /* test function */
 void test_stringops() {
     char str1[] = "Hello, World!";
