@@ -129,6 +129,7 @@ void test_vector() {
     free_vector(vec);
 }
 
+/* driver program */
 int main(void) {
     test_vector();
     printf("DONE\n");
