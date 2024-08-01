@@ -160,6 +160,7 @@ void test_stringops() {
     return;
 }
 
+/* driver program */
 int main(void) {
     test_stringops();
     return 0;
