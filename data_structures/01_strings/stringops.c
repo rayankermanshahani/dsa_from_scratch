@@ -44,7 +44,6 @@ bool is_palindrome(const char* str) {
     return true;
 }
 
-
 /* find a substring (naive approach) */
 int find_substring(const char* str, const char* substr) {
     if (str == NULL || substr == NULL) {
@@ -69,26 +68,26 @@ int find_substring(const char* str, const char* substr) {
 }
 
 /* compute the KMP failure function */
-void kmp_failure(const char* pattern, int* failure) {
-    int m = strlen(pattern);
-    failure[0] = 0;
-    int j = 0;
+void kmp_failure(const char* substr, int* failure) {
+    int m = strlen(substr);
+    failure[0] = 0; /* first element is always 0 */
+    int j = 0; 
 
     for (int i = 1; i < m; i++) {
-        while (j < 0 && pattern[j] != pattern[i]) { 
-            j = failure[j - 1];
+        while (j > 0 && substr[j] != substr[i]) {
+            j = substr[j-1]; /* fall back to previous matching position */
         }
-        if (pattern[j] == pattern[i]) {
-            j++;
+        if (substr[j] == substr[i]) {
+            j++; /* extend the matching prefix */
         }
-        failure[i] = j;
+        failure[i] = j; /* store length of the matching prefix */
     }
 }
 
 /* find a substring (KMP algorithm) */
 int find_substring_kmp(const char* str, const char* substr) {
     if (str == NULL || substr == NULL) {
-        printf("find_substring() error: string ptr is NULL\n");
+        printf("find_substring_kmp() error: string ptr is NULL\n");
         return -1; 
     }
 
@@ -96,12 +95,12 @@ int find_substring_kmp(const char* str, const char* substr) {
     int m = strlen(substr);
 
     if (m == 0)
-        return 0; /* empty patterns always match at beginning */
+        return 0; /* empty pattern always matches at the beginning */
 
-    int* failure = (int*)malloc(m* sizeof(int));
+    int* failure = (int*)malloc(m * sizeof(int));
     if (failure == NULL) {
         printf("find_substring_kmp() error: memory allocation failed\n");
-        return -1; /* memory allocation failed */
+        return -1;
     }
 
     kmp_failure(substr, failure);
@@ -109,24 +108,24 @@ int find_substring_kmp(const char* str, const char* substr) {
     int i = 0; /* index for str */
     int j = 0; /* index for substr */
 
-    while (i < n) {
+    while (i < n) { /* loop through str */
         if (substr[j] == str[i]) {
             i++;
             j++;
-            if (j == m) { /* substring found */
-                free(failure); 
-                return i - j; 
+            if (j == m) { /* end of substr is reached */
+                free(failure);
+                return i - j; /* return index of substr in str */
             }
-        } else if (j > 0) {
-            j = failure[j - 1];
-        } else {
+        } else if (j > 0) { 
+            j = failure[j-1];
+        } else { /* continue looping through str */
             i++;
         }
     }
 
     free(failure);
-    return -1; /* pattern not found */
 
+    return -1; /* substr not found in str */
 }
 
 /* test function */
