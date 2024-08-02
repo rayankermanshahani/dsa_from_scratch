@@ -120,19 +120,27 @@ void test_singly_linked_list() {
 
     insert_at_head(list, 3);
     insert_at_head(list, 3);
+    insert_at_head(list, 42);
     insert_at_head(list, 1);
     insert_at_tail(list, 7);
 
     printf("initial list: ");
     print_list(list);
-        
-    /* TODO: complete test function */
+
+    delete_node(list, 42);
+    printf("list after deleting 42: ");
+    print_list(list);
+
+    node* found = search(list, 7);
+    if (found) printf("found node with data: %d\n", found->data);
+    else printf("node not found\n");
+
+    free_list(list);
 }
 
 
 /* driver program */
 int main(void) {
     test_singly_linked_list();
-    printf("SINGLY DONE\n");
     return 0;
 }
