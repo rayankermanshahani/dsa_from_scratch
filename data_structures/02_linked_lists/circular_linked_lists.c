@@ -68,9 +68,45 @@ void insert_at_tail(circular_linked_list* list, int data) {
     }
 }
 
-/* delete a node with given data */
+/* delete node with given data */
 void delete_node(circular_linked_list* list, int data) {
-    if (list->head == NULL) return; /* list is empty */
+    if (list->head == NULL) return;
+
+    node* current = list->head;
+    node* prev = NULL;
+
+    do {
+        if (current->data == data) {
+            if (prev == NULL) { /* head is to be deleted */
+                if (current->next == list->head) { /* only one node in list */
+                    free(current);
+                    list->head = NULL;
+                } else {
+                    node* last = list->head;
+                    while (last->next != list->head) { /* find last node in the list */
+                        last = last->next;
+                    }
+                    list->head = current->next; 
+                    last->next = list->head;
+                    free(current);
+                }
+            }
+        }
+    } while (current != list->head); /* loop until head we circle back to the head */
+}
+
+
+/* search for node with given data */
+node* search(circular_linked_list* list, int data) {
+    if (list->head == NULL) return NULL; /* empty list */
+
+    node* current = list->head;
+    do {
+        if (current->data == data) return current; /* node found */
+        current = current->next;
+    } while (current != list->head); /* loop until head we circle back to the head */
+
+    return NULL; /* node not found */
 }
 
 /* test function */
