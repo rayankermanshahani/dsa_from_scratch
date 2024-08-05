@@ -109,9 +109,59 @@ node* search(circular_linked_list* list, int data) {
     return NULL; /* node not found */
 }
 
+/* print a list */
+void print_list(circular_linked_list* list) {
+    if (list->head == NULL) { /* empty list */
+        printf("empty list\n");
+        return;
+    }
+    node* current = list->head;
+    do {
+        printf("%d -> ", current->data);
+        current = current->next;
+    } while (current != list->head);
+    printf("(back to start)\n");
+}
+
+/* free an entire list from dynamically allocated memory */
+void free_list(circular_linked_list* list) {
+    if (list->head == NULL) { /* empty list */
+        free(list);
+        return;
+    }
+
+    node* current = list->head->next; /* start at the second node */
+    while (current != list->head) { /* loop through every node */
+        node* temp = current;
+        current = temp->next;
+        free(temp);
+    }
+    free(list->head); /* return back to the head of list */
+    free(list);
+}
+
 /* test function */
 void test_circular_linked_list() {
-    printf("CIRCULAR DONE\n");
+    circular_linked_list* list = init_list();
+
+    insert_at_head(list, 3);
+    insert_at_head(list, 3);
+    insert_at_head(list, 42);
+    insert_at_head(list, 1);
+    insert_at_tail(list, 7);
+
+    printf("initial list: ");
+    print_list(list);
+
+    delete_node(list, 42);
+    printf("list after deleting 42: ");
+    print_list(list);
+
+    node* found = search(list, 7);
+    if (found) printf("found node with data: %d\n", found->data);
+    else printf("node not found\n");
+
+    free_list(list);
 }
 
 /* driver program */
