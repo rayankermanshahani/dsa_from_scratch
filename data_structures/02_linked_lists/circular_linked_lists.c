@@ -90,11 +90,19 @@ void delete_node(circular_linked_list* list, int data) {
                     last->next = list->head;
                     free(current);
                 }
+            } else {
+                prev->next = current->next;
+                if (current == list->head) {
+                    list->head = current->next;
+                }
+                free(current);
             }
+            return; /* node successfully deleted */
         }
-    } while (current != list->head); /* loop until head we circle back to the head */
+        prev = current;
+        current = current->next;
+    } while (current != list->head);
 }
-
 
 /* search for node with given data */
 node* search(circular_linked_list* list, int data) {
@@ -157,7 +165,21 @@ void test_circular_linked_list() {
     printf("list after deleting 42: ");
     print_list(list);
 
-    node* found = search(list, 7);
+    delete_node(list, 1);
+    printf("list after deleting 1 (head): ");
+    print_list(list);
+
+    delete_node(list, 7);
+    printf("list after deleting 7 (tail): ");
+    print_list(list);
+
+    printf("appending 6, appending 9, prepending 11...\n");
+    insert_at_tail(list, 6);
+    insert_at_tail(list, 9);
+    insert_at_head(list, 11);
+    printf("final list: ");
+    print_list(list);
+    node* found = search(list, 9);
     if (found) printf("found node with data: %d\n", found->data);
     else printf("node not found\n");
 
