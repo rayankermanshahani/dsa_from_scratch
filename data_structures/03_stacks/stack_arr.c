@@ -32,7 +32,6 @@ void push(stack *s, int value) {
         return;
     } else {
         s->items[++(s->top)] = value;
-        printf("%d pushed to stack\n", value);
         return;
     }
 }
@@ -95,6 +94,8 @@ void test_stack() {
     assert(is_empty(s) == 1);
     assert(pop(s) == -1); /* should print underflow message */
     printf("all tests passed for array-based stack.\n");
+
+    free(s);
 }
 
 int main(void) {
